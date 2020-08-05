@@ -1,6 +1,6 @@
-# pip 20.2 fails to resolve editable dependencies
+# pip 20.2 fails to resolve editable dependencies on Python 2.7
 
-## Example with pip==20.2.1
+## pip 20.2.1 on Python 2.7 (broken)
 
 ```
 $ virtualenv -p python2.7 venv
@@ -30,7 +30,7 @@ ERROR: Could not find a version that satisfies the requirement package-a (from p
 ERROR: No matching distribution found for package-a (from package-b==0.1)
 ```
 
-## Example with pip==20.1.1
+## pip 20.1.1 on Python 2.7 (works)
 
 ```
 $ virtualenv -p python2.7 venv
@@ -75,4 +75,36 @@ Installing collected packages: package-b
 Successfully installed package-b
 WARNING: You are using pip version 20.1.1; however, version 20.2.1 is available.
 You should consider upgrading via the '/home/alanb/tmp/pip-bug/venv/bin/python2.7 -m pip install --upgrade pip' command.
+```
+
+
+## pip 20.2.1 on Python 3.7 (works)
+
+```
+$ virtualenv -p python3.7 venv
+Running virtualenv with interpreter /usr/bin/python3.7
+Already using interpreter /usr/bin/python3.7
+Using base prefix '/usr'
+New python executable in /home/alanb/tmp/pip-bug/venv/bin/python3.7
+Also creating executable in /home/alanb/tmp/pip-bug/venv/bin/python
+Installing setuptools, pip, wheel...
+done.
+
+$ source venv/bin/activate
+
+(venv) $ pip --version
+pip 20.2.1 from /home/alanb/tmp/pip-bug/venv/lib/python3.7/site-packages/pip (python 3.7)
+
+(venv) $ pip install -e package_a/
+Obtaining file:///home/alanb/tmp/pip-bug/package_a
+Installing collected packages: package-a
+  Running setup.py develop for package-a
+Successfully installed package-a
+
+(venv) $ pip install -e package_b/
+Obtaining file:///home/alanb/tmp/pip-bug/package_b
+Requirement already satisfied: package-a in ./package_a (from package-b==0.1) (0.1)
+Installing collected packages: package-b
+  Running setup.py develop for package-b
+Successfully installed package-b
 ```
